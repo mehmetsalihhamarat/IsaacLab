@@ -142,6 +142,15 @@ def main():
 
     # extract success checking function to invoke in the main loop
     success_term = None
+    if env_cfg.terminations.success:
+        success_term = env_cfg.terminations.success
+        env_cfg.terminations.success = None
+    else:
+        omni.log.warn(
+            "No success termination term was found in the environment."
+            " Will not be able to mark recorded demos as successful."
+        )
+    """
     if hasattr(env_cfg.terminations, "success"):
         success_term = env_cfg.terminations.success
         env_cfg.terminations.success = None
@@ -150,7 +159,7 @@ def main():
             "No success termination term was found in the environment."
             " Will not be able to mark recorded demos as successful."
         )
-
+    """
     # modify configuration such that the environment runs indefinitely until
     # the goal is reached or other termination conditions are met
     env_cfg.terminations.time_out = None

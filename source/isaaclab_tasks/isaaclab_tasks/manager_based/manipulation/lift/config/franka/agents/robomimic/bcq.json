@@ -2,7 +2,7 @@
     "algo_name": "bcq",
     "experiment": {
         "name": "bcq",
-        "validate": true,
+        "validate": false,
         "logging": {
             "terminal_output_to_txt": true,
             "log_tb": true
@@ -41,6 +41,7 @@
         "hdf5_use_swmr": true,
         "hdf5_normalize_obs": false,
         "hdf5_filter_key": null,
+        "hdf5_validation_filter_key": null,
         "seq_length": 1,
         "dataset_keys": [
             "actions",
@@ -177,10 +178,10 @@
         "modalities": {
             "obs": {
                 "low_dim": [
-                    "tool_dof_pos_scaled",
-                    "tool_positions",
-                    "object_relative_tool_positions",
-                    "object_desired_positions"
+                    "joint_pos",
+                    "joint_vel",
+                    "object_position",
+                    "target_object_position"
                 ],
                 "rgb": [],
                 "depth": [],
