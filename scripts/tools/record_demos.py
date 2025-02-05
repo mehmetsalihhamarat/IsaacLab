@@ -142,9 +142,9 @@ def main():
 
     # extract success checking function to invoke in the main loop
     success_term = None
-    if env_cfg.terminations.success:
-        success_term = env_cfg.terminations.success
-        env_cfg.terminations.success = None
+    if env_cfg.terminations.success: # type: ignore
+        success_term = env_cfg.terminations.success # type: ignore
+        env_cfg.terminations.success = None # type: ignore
     else:
         omni.log.warn(
             "No success termination term was found in the environment."
@@ -162,11 +162,11 @@ def main():
     """
     # modify configuration such that the environment runs indefinitely until
     # the goal is reached or other termination conditions are met
-    env_cfg.terminations.time_out = None
+    env_cfg.terminations.time_out = None # type: ignore
 
-    env_cfg.observations.policy.concatenate_terms = False
+    env_cfg.observations.policy.concatenate_terms = False # type: ignore
 
-    env_cfg.recorders: ActionStateRecorderManagerCfg = ActionStateRecorderManagerCfg()
+    env_cfg.recorders: ActionStateRecorderManagerCfg = ActionStateRecorderManagerCfg() # type: ignore
     env_cfg.recorders.dataset_export_dir_path = output_dir
     env_cfg.recorders.dataset_filename = output_file_name
 
@@ -182,7 +182,7 @@ def main():
 
     # create controller
     if args_cli.teleop_device.lower() == "keyboard":
-        teleop_interface = Se3Keyboard(pos_sensitivity=0.2, rot_sensitivity=0.5)
+        teleop_interface = Se3Keyboard(pos_sensitivity=0.02, rot_sensitivity=0.5)
     elif args_cli.teleop_device.lower() == "spacemouse":
         teleop_interface = Se3SpaceMouse(pos_sensitivity=0.2, rot_sensitivity=0.5)
     elif args_cli.teleop_device.lower() == "handtracking":

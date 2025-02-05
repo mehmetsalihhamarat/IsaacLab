@@ -181,8 +181,8 @@ class UniformPoseCommandCfg(CommandTermCfg):
     """The configuration for the current pose visualization marker. Defaults to FRAME_MARKER_CFG."""
 
     # Set the scale of the visualization markers to (0.1, 0.1, 0.1)
-    goal_pose_visualizer_cfg.markers["frame"].scale = (0.1, 0.1, 0.1)
-    current_pose_visualizer_cfg.markers["frame"].scale = (0.1, 0.1, 0.1)
+    goal_pose_visualizer_cfg.markers["frame"].scale = (0.01, 0.01, 0.01) # default "0.1" 
+    current_pose_visualizer_cfg.markers["frame"].scale = (0.01, 0.01, 0.01) # for psm "0.02"
 
 
 @configclass
