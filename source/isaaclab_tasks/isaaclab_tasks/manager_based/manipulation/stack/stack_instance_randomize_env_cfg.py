@@ -122,6 +122,20 @@ class TerminationsCfg:
 
     time_out = DoneTerm(func=mdp.time_out, time_out=True)
 
+    cube_1_dropping = DoneTerm(
+        func=mdp.root_height_below_minimum, params={"minimum_height": -0.05, "asset_cfg": SceneEntityCfg("cube_1")}
+    )
+
+    cube_2_dropping = DoneTerm(
+        func=mdp.root_height_below_minimum, params={"minimum_height": -0.05, "asset_cfg": SceneEntityCfg("cube_2")}
+    )
+
+    cube_3_dropping = DoneTerm(
+        func=mdp.root_height_below_minimum, params={"minimum_height": -0.05, "asset_cfg": SceneEntityCfg("cube_3")}
+    )
+
+    success = DoneTerm(func=mdp.cubes_stacked)
+
 
 @configclass
 class StackInstanceRandomizeEnvCfg(ManagerBasedRLEnvCfg):

@@ -7,7 +7,7 @@ from isaaclab.controllers.differential_ik_cfg import DifferentialIKControllerCfg
 from isaaclab.envs.mdp.actions.actions_cfg import DifferentialInverseKinematicsActionCfg
 from isaaclab.utils import configclass
 
-from . import joint_pos_env_cfg
+from . import joint_pos_rgb_env_cfg
 
 ##
 # Pre-defined configs
@@ -16,7 +16,7 @@ from isaaclab_assets.robots.psm import PSM_HIGH_PD_CFG  # isort: skip
 
 
 @configclass
-class NeedleLiftEnvCfg(joint_pos_env_cfg.NeedleLiftEnvCfg):
+class NeedleLiftRGBEnvCfg(joint_pos_rgb_env_cfg.NeedleLiftRGBEnvCfg):
     def __post_init__(self):
         # post init of parent
         super().__post_init__()
@@ -37,12 +37,13 @@ class NeedleLiftEnvCfg(joint_pos_env_cfg.NeedleLiftEnvCfg):
                 "psm_tool_yaw_joint",
             ],
             body_name="psm_tool_tip_link",
-            controller=DifferentialIKControllerCfg(command_type="pose", use_relative_mode=False, ik_method="dls"),
+            controller=DifferentialIKControllerCfg(command_type="pose", use_relative_mode=True, ik_method="dls"),
+            scale=0.5,
         ) # type: ignore
 
 
 @configclass
-class NeedleLiftEnvCfg_PLAY(NeedleLiftEnvCfg):
+class NeedleLiftRGBEnvCfg_PLAY(NeedleLiftRGBEnvCfg):
     def __post_init__(self):
         # post init of parent
         super().__post_init__()

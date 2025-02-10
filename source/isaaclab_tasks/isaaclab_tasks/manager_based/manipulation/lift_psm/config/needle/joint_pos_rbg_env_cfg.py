@@ -4,20 +4,16 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from isaaclab_assets import ISAACLAB_ASSETS_DATA_DIR
-#
-#import torch
-#from isaaclab.managers import SceneEntityCfg
-#
-import isaaclab.sim as sim_utils
+
 from isaaclab.assets import RigidObjectCfg
-from isaaclab.sensors import CameraCfg, FrameTransformerCfg, TiledCameraCfg
+from isaaclab.sensors import CameraCfg, FrameTransformerCfg
 from isaaclab.sensors.frame_transformer.frame_transformer_cfg import OffsetCfg
 from isaaclab.sim.schemas.schemas_cfg import RigidBodyPropertiesCfg
 from isaaclab.sim.spawners.from_files.from_files_cfg import UsdFileCfg
 from isaaclab.utils import configclass
 
 from isaaclab_tasks.manager_based.manipulation.lift_psm import mdp
-from isaaclab_tasks.manager_based.manipulation.lift_psm.lift_env_cfg import LiftEnvCfg
+from isaaclab_tasks.manager_based.manipulation.lift_psm.lift_rgb_env_cfg import LiftRGBEnvCfg
 
 ##
 # Pre-defined configs
@@ -27,7 +23,7 @@ from isaaclab_assets.robots.psm import PSM_CFG  # isort: skip
 
 
 @configclass
-class NeedleLiftEnvCfg(LiftEnvCfg):
+class NeedleLiftRGBEnvCfg(LiftRGBEnvCfg):
     def __post_init__(self):
         # post init of parent
         super().__post_init__()
@@ -75,32 +71,18 @@ class NeedleLiftEnvCfg(LiftEnvCfg):
                 ),
             ),
         )
-        
-        # Set wrist camera
-        self.scene.wrist_cam = CameraCfg(
-            prim_path="{ENV_REGEX_NS}/Robot/psm_tool_tip_link/wrist_cam",
-            update_period=0.0333,
-            height=1280,
-            width=720,
-            data_types=["rgb", "distance_to_image_plane"],
-            spawn=sim_utils.PinholeCameraCfg(
-                focal_length=0.2, focus_distance=50.0, horizontal_aperture=3, clipping_range=(0.01, 1.0e5)
-            ),
-            offset=CameraCfg.OffsetCfg(pos=(0.0, 0.035, 0.01), rot=(0, 0, -2, 1), convention="ros"),
-        )
-        
+
         # Set table view camera
         self.scene.table_cam = CameraCfg(
             prim_path="{ENV_REGEX_NS}/table_cam",
             update_period=0.0333,
-            height=1280,
-            width=720,
+            height=84,
+            width=84,
             data_types=["rgb", "distance_to_image_plane"],
             spawn=sim_utils.PinholeCameraCfg(
-                focal_length=20.0, focus_distance=200.0, horizontal_aperture=15, clipping_range=(0.1, 1.0e5)
+                focal_length=24.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 1.0e5)
             ),
-            #offset=CameraCfg.OffsetCfg(pos=(0.7, 0.0, 0.4), rot=(-0.45, 0.55, 0.55, -0.45), convention="ros"),
-            offset=CameraCfg.OffsetCfg(pos=(0.0, 0.4, 0.25), rot=(0, 0, -1.6, 1), convention="ros"),
+            offset=CameraCfg.OffsetCfg(pos=(1.0, 0.0, 0.33), rot=(-0.3799, 0.5963, 0.5963, -0.3799), convention="ros"),
         )
 
         # Listens to the required transforms
@@ -120,7 +102,7 @@ class NeedleLiftEnvCfg(LiftEnvCfg):
         )
 
 @configclass
-class NeedleLiftEnvCfg_PLAY(NeedleLiftEnvCfg):
+class NeedleLiftRGBEnvCfg_PLAY(NeedleLiftRGBEnvCfg):
     def __post_init__(self):
         # post init of parent
         super().__post_init__()

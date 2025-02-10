@@ -22,3 +22,12 @@ gym.register(
     },
     disable_env_checker=True,
 )
+
+gym.register(
+    id="Isaac-Lift-Needle-PSM-IK-Rel-Mimic-v0",
+    entry_point="isaaclab_mimic.envs:NeedleLiftIKRelMimicEnv",
+    kwargs={
+        "env_cfg_entry_point": needle_lift_ik_rel_mimic_env_cfg.NeedleLiftIKRelMimicEnvCfg,
+    },
+    disable_env_checker=True,
+)

@@ -7,7 +7,11 @@
 import gymnasium as gym
 import os
 
-from . import agents, ik_abs_env_cfg, ik_rel_env_cfg, joint_pos_env_cfg
+from . import (
+    agents,
+    ik_rel_env_cfg,
+    joint_pos_env_cfg,
+)
 
 ##
 # Register Gym environments.
@@ -36,7 +40,29 @@ gym.register(
     },
     disable_env_checker=True,
 )
+"""
+## With RGB
+gym.register(
+    id="Isaac-RGB-Lift-Needle-PSM-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    kwargs={
+        "env_cfg_entry_point": joint_pos_rgb_env_cfg.NeedleLiftRGBEnvCfg,
+        #"rsl_rl_cfg_entry_point": agents.rsl_rl_cfg.LiftNeedlePPORunnerCfg,
+    },
+    disable_env_checker=True,
+)
 
+gym.register(
+    id="Isaac-RGB-Lift-Needle-PSM-Play-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    kwargs={
+        "env_cfg_entry_point": joint_pos_rgb_env_cfg.NeedleLiftRGBEnvCfg_PLAY,
+        #"rsl_rl_cfg_entry_point": agents.rsl_rl_cfg.LiftNeedlePPORunnerCfg,
+    },
+    disable_env_checker=True,
+)
+"""
+"""
 ##
 # Inverse Kinematics - Absolute Pose Control
 ##
@@ -60,7 +86,7 @@ gym.register(
     },
     disable_env_checker=True,
 )
-
+"""
 ##
 # Inverse Kinematics - Relative Pose Control
 ##
@@ -70,8 +96,8 @@ gym.register(
     entry_point="isaaclab.envs:ManagerBasedRLEnv",
     kwargs={
         "env_cfg_entry_point": ik_rel_env_cfg.NeedleLiftEnvCfg,
-        #"rsl_rl_cfg_entry_point": agents.rsl_rl_cfg.LiftNeedlePPORunnerCfg,
-        "robomimic_bc_cfg_entry_point": os.path.join(agents.__path__[0], "robomimic/bc_rnn_low_dim.json"),
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:LiftNeedlePPORunnerCfg",
+        "robomimic_bc_cfg_entry_point": os.path.join(agents.__path__[0], "robomimic/bc_rnn_rbg.json"),
     },
     disable_env_checker=True,
 )
@@ -81,11 +107,34 @@ gym.register(
     entry_point="isaaclab.envs:ManagerBasedRLEnv",
     kwargs={
         "env_cfg_entry_point": ik_rel_env_cfg.NeedleLiftEnvCfg_PLAY,
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:LiftNeedlePPORunnerCfg",
+        "robomimic_bc_cfg_entry_point": os.path.join(agents.__path__[0], "robomimic/bc_rnn_rbg.json"),
+    },
+    disable_env_checker=True,
+)
+"""
+## With RGB
+gym.register(
+    id="Isaac-RGB-Lift-Needle-PSM-IK-Rel-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    kwargs={
+        "env_cfg_entry_point": ik_rel_rgb_env_cfg.NeedleLiftRGBEnvCfg,
         #"rsl_rl_cfg_entry_point": agents.rsl_rl_cfg.LiftNeedlePPORunnerCfg,
         "robomimic_bc_cfg_entry_point": os.path.join(agents.__path__[0], "robomimic/bc_rnn_low_dim.json"),
     },
     disable_env_checker=True,
 )
 
+gym.register(
+    id="Isaac-RGB-Lift-Needle-PSM-IK-Rel-Play-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    kwargs={
+        "env_cfg_entry_point": ik_rel_rgb_env_cfg.NeedleLiftRGBEnvCfg_PLAY,
+        #"rsl_rl_cfg_entry_point": agents.rsl_rl_cfg.LiftNeedlePPORunnerCfg,
+        "robomimic_bc_cfg_entry_point": os.path.join(agents.__path__[0], "robomimic/bc_rnn_low_dim.json"),
+    },
+    disable_env_checker=True,
+)
+"""
 
 

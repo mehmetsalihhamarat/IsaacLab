@@ -40,7 +40,7 @@
         "hdf5_cache_mode": "all",
         "hdf5_use_swmr": true,
         "hdf5_normalize_obs": false,
-        "hdf5_filter_key": "train",
+        "hdf5_filter_key": null,
         "hdf5_validation_filter_key": null,
         "seq_length": 1,
         "dataset_keys": [
@@ -50,8 +50,8 @@
         ],
         "goal_mode": null,
         "cuda": true,
-        "batch_size": 1024,
-        "num_epochs": 200,
+        "batch_size": 16,
+        "num_epochs": 10,
         "seed": 1
     },
     "algo": {
@@ -142,12 +142,10 @@
         "modalities": {
             "obs": {
                 "low_dim": [
-                    "joint_pos",
-                    "joint_vel",
-                    "object_position",
-                    "target_object_position"
                 ],
-                "rgb": [],
+                "rgb": [
+                    "table_cam"
+                ],
                 "depth": [],
                 "scan": []
             },
@@ -166,31 +164,12 @@
                 "obs_randomizer_kwargs": {}
             },
             "rgb": {
-                "core_class": "VisualCore",
-                "core_kwargs": {
-                    "feature_dimension": 64,
-                    "flatten": true,
-                    "backbone_class": "ResNet18Conv",
-                    "backbone_kwargs": {
-                        "pretrained": false,
-                        "input_coord_conv": false
-                    },
-                    "pool_class": "SpatialSoftmax",
-                    "pool_kwargs": {
-                        "num_kp": 32,
-                        "learnable_temperature": false,
-                        "temperature": 1.0,
-                        "noise_std": 0.0,
-                        "output_variance": false
-                    }
-                },
+                "core_class": null,
+                "core_kwargs": {},
+                    "pool_class": null,
+                    "pool_kwargs": {},
                 "obs_randomizer_class": null,
-                "obs_randomizer_kwargs": {
-                    "crop_height": 76,
-                    "crop_width": 76,
-                    "num_crops": 1,
-                    "pos_enc": false
-                }
+                "obs_randomizer_kwargs": {}
             },
             "depth": {
                 "core_class": "VisualCore",

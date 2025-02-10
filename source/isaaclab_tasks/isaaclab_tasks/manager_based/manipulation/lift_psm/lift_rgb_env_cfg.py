@@ -18,7 +18,7 @@ from isaaclab.managers import RewardTermCfg as RewTerm
 from isaaclab.managers import SceneEntityCfg
 from isaaclab.managers import TerminationTermCfg as DoneTerm
 from isaaclab.scene import InteractiveSceneCfg
-from isaaclab.sensors import CameraCfg, TiledCameraCfg
+from isaaclab.sensors import CameraCfg
 from isaaclab.sensors.frame_transformer.frame_transformer_cfg import FrameTransformerCfg
 from isaaclab.sim.spawners.from_files.from_files_cfg import GroundPlaneCfg, UsdFileCfg
 from isaaclab.utils import configclass
@@ -45,7 +45,6 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
     object: RigidObjectCfg = MISSING
 
     # Cameras
-    wrist_cam: CameraCfg = MISSING
     table_cam: CameraCfg = MISSING
 
     # Table
@@ -68,9 +67,11 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
         spawn=sim_utils.DomeLightCfg(color=(0.75, 0.75, 0.75), intensity=3000.0),
     )
 
+
 ##
 # MDP settings
 ##
+
 
 @configclass
 class CommandsCfg:
@@ -104,7 +105,6 @@ class ActionsCfg:
 class ObservationsCfg:
     """Observations for policy group with state values."""
 
-    
     @configclass
     class PolicyCfg(ObsGroup):
         """Observations for policy group."""
@@ -116,28 +116,25 @@ class ObservationsCfg:
         actions = ObsTerm(func=mdp.last_action)
 
         def __post_init__(self):
-            self.enable_corruption = False
-            self.concatenate_terms = False
+            self.enable_corruption = True
+            self.concatenate_terms = True
 
     @configclass
     class RGBCameraPolicyCfg(ObsGroup):
         """Observations for policy group with RGB images."""
-        
+
         table_cam = ObsTerm(
             func=mdp.image, params={"sensor_cfg": SceneEntityCfg("table_cam"), "data_type": "rgb", "normalize": False}
         )
-        
-        wrist_cam = ObsTerm(
-            func=mdp.image, params={"sensor_cfg": SceneEntityCfg("wrist_cam"), "data_type": "rgb", "normalize": False}
-        )
-        
+
         def __post_init__(self):
             self.enable_corruption = False
             self.concatenate_terms = False
 
     # observation groups
     policy: PolicyCfg = PolicyCfg()
-    policy: RGBCameraPolicyCfg = RGBCameraPolicyCfg()
+    rgb_camera: RGBCameraPolicyCfg = RGBCameraPolicyCfg()
+
 
 @configclass
 class EventCfg:
@@ -218,11 +215,11 @@ class CurriculumCfg:
 
 
 @configclass
-class LiftEnvCfg(ManagerBasedRLEnvCfg):
+class LiftRGBEnvCfg(ManagerBasedRLEnvCfg):
     """Configuration for the lifting environment."""
 
     # Scene settings
-    scene: ObjectTableSceneCfg = ObjectTableSceneCfg(num_envs=4096, env_spacing=2.5, replicate_physics=False) # 4096 - 2.5
+    scene: ObjectTableSceneCfg = ObjectTableSceneCfg(num_envs=4096, env_spacing=2.5) # 4096 - 2.5
     # Basic settings
     observations: ObservationsCfg = ObservationsCfg()
     actions: ActionsCfg = ActionsCfg()
@@ -237,7 +234,7 @@ class LiftEnvCfg(ManagerBasedRLEnvCfg):
         """Post initialization."""
         # general settings
         self.decimation = 4 #4
-        self.episode_length_s = 2 # 2
+        self.episode_length_s = 2.0 # 2
         # simulation settings
         self.sim.dt = 0.005 # 0.005 (0.01)
         self.sim.render_interval = self.decimation
@@ -250,3 +247,4 @@ class LiftEnvCfg(ManagerBasedRLEnvCfg):
         self.sim.physx.gpu_found_lost_aggregate_pairs_capacity = 1024 * 1024 * 4
         self.sim.physx.gpu_total_aggregate_pairs_capacity = 16 * 1024
         self.sim.physx.friction_correlation_distance = 0.00625
+        
